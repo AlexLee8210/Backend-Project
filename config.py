@@ -1,0 +1,2 @@
+url="https://xfrkxelhkzhbuyjyvyhq.supabase.co"
+api="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhmcmt4ZWxoa3poYnV5anl2eWhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg1NTgyNDMsImV4cCI6MjAyNDEzNDI0M30.hSYlcgY919OvC8K9F6P18deqHvIhO4Dfc7m7kVqA7mE"

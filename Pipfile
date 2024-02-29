@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 fastapi = {extras = ["all"], version = "*"}
+supabase = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
 
 [dev-packages]
 
