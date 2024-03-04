@@ -1,8 +1,8 @@
-from fastapi import APIRouter, status, Response, Depends, HTTPException
-from typing import Union, Annotated
+from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
 from db.supabase import create_supabase_client
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from models import Token, User
+from models import Token
 
 supabase = create_supabase_client()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")

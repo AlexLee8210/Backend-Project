@@ -1,4 +1,4 @@
-from fastapi import status, Response, Depends, HTTPException, APIRouter
+from fastapi import status, Response, APIRouter
 from typing import Union
 from models import Product
 from db.supabase import create_supabase_client
