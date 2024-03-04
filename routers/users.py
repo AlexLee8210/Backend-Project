@@ -1,6 +1,7 @@
-from fastapi import status, Response, HTTPException, APIRouter
-from typing import Union
+from fastapi import status, Response, APIRouter, Depends
+from typing import Union, Annotated
 from models import User
+from routers.auth import get_current_user
 from db.supabase import create_supabase_client
 
 router = APIRouter(
@@ -28,7 +29,7 @@ def get_user_profile(user_id: str, response: Response):
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_user_profile(req: User, response: Response):
     user_email = req.email.lower()
-    exists = user_exists(value=user_email)[0]
+    exists = user_exists(key='email', value=user_email)[0]
     if exists:
         response.status_code = status.HTTP_200_OK
         return {"message": "User already exists"}
@@ -42,9 +43,12 @@ def create_user_profile(req: User, response: Response):
 @router.put("/{user_id}", status_code=status.HTTP_200_OK)
 def update_user_profile(user_id: str, 
                         response: Response,
-                        # token: Annotated[str, Depends(oauth2_scheme)],
+                        curr_user: Annotated[User, Depends(get_current_user)],
                         username: Union[str, None] = None, 
                         email: Union[str, None] = None):
+    if user_id != curr_user["user_id"]:
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return {"message": "Not authorized to edit this user"}
     exists, user = user_exists(value=user_id)
     if not exists:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -70,7 +74,13 @@ def update_user_profile(user_id: str,
     return {"message": "User updated successfully"}
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user_profile(user_id: str, response: Response):
+def delete_user_profile(user_id: str,
+                        response: Response,
+                        curr_user: Annotated[User, Depends(get_current_user)]):
+    if user_id != curr_user["user_id"]:
+        response.status_code=status.HTTP_401_UNAUTHORIZED
+        return {"message": "Not authorized to edit this user"}
+        
     exists = user_exists(value=user_id)[0]
     if not exists:
         response.status_code=status.HTTP_404_NOT_FOUND

@@ -3,12 +3,13 @@ from typing import Union
 from models import Product
 from db.supabase import create_supabase_client
 
+supabase = create_supabase_client()
+
 router = APIRouter(
     prefix="/products",
     tags=["products"]
 )
 
-supabase = create_supabase_client()
 def product_exists(key: str = "product_id", value: str = None):
     try:
         user = supabase.from_("products").select("*").eq(key, value).execute()
